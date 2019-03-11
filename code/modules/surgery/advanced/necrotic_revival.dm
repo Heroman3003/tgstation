@@ -1,9 +1,6 @@
-/obj/item/disk/surgery/necrotic_revival
-	desc = "The disk provides instructions on how to make bodies keep working past death."
-	surgeries = list(/datum/surgery/advanced/necrotic_revival)
-
 /datum/surgery/advanced/necrotic_revival
-	name = "necrotic revival"
+	name = "Necrotic Revival"
+	desc = "An experimental surgical procedure that stimulates the growth of a Romerol tumor inside the patient's brain. Requires zombie powder or rezadone."
 	steps = list(/datum/surgery_step/incise,
 				/datum/surgery_step/retract_skin,
 				/datum/surgery_step/saw,
@@ -11,7 +8,7 @@
 				/datum/surgery_step/bionecrosis,
 				/datum/surgery_step/close)
 
-	possible_locs = list("head")
+	possible_locs = list(BODY_ZONE_HEAD)
 
 /datum/surgery/advanced/necrotic_revival/can_start(mob/user, mob/living/carbon/target)
 	. = ..()

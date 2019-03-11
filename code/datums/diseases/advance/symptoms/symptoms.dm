@@ -28,6 +28,7 @@
 	//A neutered symptom has no effect, and only affects statistics.
 	var/neutered = FALSE
 	var/list/thresholds
+	var/naturally_occuring = TRUE //if this symptom can appear from /datum/disease/advance/GenerateSymptoms()
 
 /datum/symptom/New()
 	var/list/S = SSdisease.list_symptoms
@@ -58,6 +59,11 @@
 	else
 		next_activation = world.time + rand(symptom_delay_min * 10, symptom_delay_max * 10)
 		return TRUE
+
+/datum/symptom/proc/on_stage_change(new_stage, datum/disease/advance/A)
+	if(neutered)
+		return FALSE
+	return TRUE
 
 /datum/symptom/proc/Copy()
 	var/datum/symptom/new_symp = new type

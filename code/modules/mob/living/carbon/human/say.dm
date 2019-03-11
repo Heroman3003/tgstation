@@ -7,8 +7,8 @@
 
 /mob/living/carbon/human/treat_message(message)
 	message = dna.species.handle_speech(message,src)
-	if(viruses.len)
-		for(var/datum/disease/pierrot_throat/D in viruses)
+	if(diseases.len)
+		for(var/datum/disease/pierrot_throat/D in diseases)
 			var/list/temp_message = splittext(message, " ") //List each word in the message
 			var/list/pick_list = list()
 			for(var/i = 1, i <= temp_message.len, i++) //Create a second list for excluding words down the line
@@ -69,11 +69,11 @@
 
 /mob/living/carbon/human/binarycheck()
 	if(ears)
-		var/obj/item/device/radio/headset/dongle = ears
+		var/obj/item/radio/headset/dongle = ears
 		if(!istype(dongle))
-			return 0
+			return FALSE
 		if(dongle.translate_binary)
-			return 1
+			return TRUE
 
 /mob/living/carbon/human/radio(message, message_mode, list/spans, language)
 	. = ..()

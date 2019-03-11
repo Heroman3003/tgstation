@@ -10,8 +10,8 @@
 #define BOSS_MEDAL_DRAKE	  "Drake"
 #define BOSS_MEDAL_HIEROPHANT "Hierophant"
 #define BOSS_MEDAL_LEGION	  "Legion"
-#define BOSS_MEDAL_SWARMER	  "Swarmer Beacon"
 #define BOSS_MEDAL_TENDRIL	  "Tendril"
+#define BOSS_MEDAL_SWARMERS   "Swarmer Beacon"
 
 // Score names
 #define HIEROPHANT_SCORE 	 "Hierophants Killed"
@@ -27,3 +27,6 @@
 #define MEDAL_METEOR 	"Your Life Before Your Eyes"
 #define MEDAL_PULSE 	"Jackpot"
 #define MEDAL_TIMEWASTE "Overextended The Joke"
+#define MEDAL_RODSUPLEX "Feat of Strength"
+#define MEDAL_CLOWNCARKING "Round and Full"
+#define MEDAL_THANKSALOT "The Best Driver"

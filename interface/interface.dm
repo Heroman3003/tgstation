@@ -84,8 +84,9 @@ Admin:
 \tF3 = asay
 \tF5 = Aghost (admin-ghost)
 \tF6 = player-panel
-\tF7 = admin-pm
+\tF7 = Buildmode
 \tF8 = Invisimin
+\tCtrl+F8 = Stealthmin
 </font>"}
 
 	mob.hotkey_help()
@@ -123,8 +124,8 @@ Hotkey-Mode: (hotkey-mode must be on)
 \t<B></B>h = stop pulling
 \tx = swap-hand
 \tz = activate held object (or y)
-\tShift+e = Put held item into belt or take out most recent item added to belt.
-\tShift+b = Put held item into backpack or take out most recent item added to backpack.
+\tShift+e = Put held item into belt(or belt slot) or take out most recent item added.
+\tShift+b = Put held item into backpack(or back slot) or take out most recent item added.
 \tf = cycle-intents-left
 \tg = cycle-intents-right
 \t1 = help-intent

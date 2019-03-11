@@ -18,7 +18,7 @@
   * optional state datum/ui_state The state used to determine status.
  **/
 /datum/proc/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
-	return -1 // Not implemented.
+	return FALSE // Not implemented.
 
  /**
   * public
@@ -66,6 +66,14 @@
   * Used to track UIs for a mob.
  **/
 /mob/var/list/open_uis = list()
+ /**
+  * public
+  *
+  * Called on a UI's object when the UI is closed, not to be confused with client/verb/uiclose(), which closes the ui window
+  *
+  *
+ **/
+/datum/proc/ui_close()
 
  /**
   * verb

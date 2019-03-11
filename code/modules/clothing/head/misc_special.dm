@@ -6,6 +6,8 @@
  *		Pumpkin head
  *		Kitty ears
  *		Cardborg disguise
+ *		Wig
+ *		Bronze hat
  */
 
 /*
@@ -129,7 +131,7 @@
 	dog_fashion = /datum/dog_fashion/head/kitty
 
 /obj/item/clothing/head/kitty/equipped(mob/living/carbon/human/user, slot)
-	if(ishuman(user) && slot == slot_head)
+	if(ishuman(user) && slot == SLOT_HEAD)
 		update_icon(user)
 		user.update_inv_head() //Color might have been changed by update_icon.
 	..()
@@ -167,7 +169,7 @@
 
 /obj/item/clothing/head/cardborg/equipped(mob/living/user, slot)
 	..()
-	if(ishuman(user) && slot == slot_head)
+	if(ishuman(user) && slot == SLOT_HEAD)
 		var/mob/living/carbon/human/H = user
 		if(istype(H.wear_suit, /obj/item/clothing/suit/cardborg))
 			var/obj/item/clothing/suit/cardborg/CB = H.wear_suit
@@ -187,6 +189,7 @@
 	flags_inv = HIDEHAIR
 	var/hair_style = "Very Long Hair"
 	var/hair_color = "#000"
+	var/adjustablecolor = TRUE //can color be changed manually?
 
 /obj/item/clothing/head/wig/Initialize(mapload)
 	. = ..()
@@ -214,10 +217,46 @@
 		M.color = hair_color
 		. += M
 
+/obj/item/clothing/head/wig/attack_self(mob/user)
+	var/new_style = input(user, "Select a hair style", "Wig Styling")  as null|anything in (GLOB.hair_styles_list - "Bald")
+	if(!user.canUseTopic(src, BE_CLOSE))
+		return
+	if(new_style && new_style != hair_style)
+		hair_style = new_style
+		user.visible_message("<span class='notice'>[user] changes \the [src]'s hairstyle to [new_style].</span>", "<span class='notice'>You change \the [src]'s hairstyle to [new_style].</span>")
+	if(adjustablecolor)
+		hair_color = input(usr,"","Choose Color",hair_color) as color|null
+	update_icon()
+
 /obj/item/clothing/head/wig/random/Initialize(mapload)
 	hair_style = pick(GLOB.hair_styles_list - "Bald") //Don't want invisible wig
 	hair_color = "#[random_short_color()]"
 	. = ..()
+
+/obj/item/clothing/head/wig/natural
+	name = "natural wig"
+	desc = "A bunch of hair without a head attached. This one changes color to match the hair of the wearer. Nothing natural about that."
+	hair_color = "#FFF"
+	adjustablecolor = FALSE
+	custom_price = 25
+
+/obj/item/clothing/head/wig/natural/Initialize(mapload)
+	hair_style = pick(GLOB.hair_styles_list - "Bald")
+	. = ..()
+
+/obj/item/clothing/head/wig/natural/equipped(mob/living/carbon/human/user, slot)
+	if(ishuman(user) && slot == SLOT_HEAD)
+		hair_color = "#[user.hair_color]"
+		update_icon()
+		user.update_inv_head()
+
+/obj/item/clothing/head/bronze
+	name = "bronze hat"
+	desc = "A crude helmet made out of bronze plates. It offers very little in the way of protection."
+	icon = 'icons/obj/clothing/clockwork_garb.dmi'
+	icon_state = "clockwork_helmet_old"
+	flags_inv = HIDEEARS|HIDEHAIR
+	armor = list("melee" = 5, "bullet" = 0, "laser" = -5, "energy" = 0, "bomb" = 10, "bio" = 0, "rad" = 0, "fire" = 20, "acid" = 20)
 
 /obj/item/clothing/head/foilhat
 	name = "tinfoil hat"
@@ -225,9 +264,29 @@
 	icon_state = "foilhat"
 	item_state = "foilhat"
 	armor = list("melee" = 0, "bullet" = 0, "laser" = -5,"energy" = 0, "bomb" = 0, "bio" = 0, "rad" = -5, "fire" = 0, "acid" = 0)
+	equip_delay_other = 140
+	var/datum/brain_trauma/mild/phobia/conspiracies/paranoia
 
 /obj/item/clothing/head/foilhat/equipped(mob/living/carbon/human/user, slot)
-	if(slot == slot_head)
-		user.gain_trauma(/datum/brain_trauma/mild/phobia, FALSE, "conspiracies")
+	..()
+	if(slot == SLOT_HEAD)
+		if(paranoia)
+			QDEL_NULL(paranoia)
+		paranoia = new()
+		paranoia.clonable = FALSE
+
+		user.gain_trauma(paranoia, TRAUMA_RESILIENCE_MAGIC)
 		to_chat(user, "<span class='warning'>As you don the foiled hat, an entire world of conspiracy theories and seemingly insane ideas suddenly rush into your mind. What you once thought unbelievable suddenly seems.. undeniable. Everything is connected and nothing happens just by accident. You know too much and now they're out to get you. </span>")
-		flags_1 |= NODROP_1
+
+/obj/item/clothing/head/foilhat/dropped(mob/user)
+	..()
+	if(paranoia)
+		QDEL_NULL(paranoia)
+
+/obj/item/clothing/head/foilhat/attack_hand(mob/user)
+	if(iscarbon(user))
+		var/mob/living/carbon/C = user
+		if(src == C.head)
+			to_chat(user, "<span class='userdanger'>Why would you want to take this off? Do you want them to get into your mind?!</span>")
+			return
+	..()

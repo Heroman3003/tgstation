@@ -26,7 +26,7 @@
 	return
 
 /obj/structure/barricade/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weldingtool) && user.a_intent != INTENT_HARM && material == METAL)
+	if(I.tool_behaviour == TOOL_WELDER && user.a_intent != INTENT_HARM && material == METAL)
 		if(obj_integrity < max_integrity)
 			if(!I.tool_start_check(user, amount=0))
 				return
@@ -63,6 +63,22 @@
 	icon_state = "woodenbarricade"
 	material = WOOD
 	var/drop_amount = 3
+
+/obj/structure/barricade/wooden/attackby(obj/item/I, mob/user)
+	if(istype(I,/obj/item/stack/sheet/mineral/wood))
+		var/obj/item/stack/sheet/mineral/wood/W = I
+		if(W.amount < 5)
+			to_chat(user, "<span class='warning'>You need at least five wooden planks to make a wall!</span>")
+			return
+		else
+			to_chat(user, "<span class='notice'>You start adding [I] to [src]...</span>")
+			if(do_after(user, 50, target=src))
+				W.use(5)
+				new /turf/closed/wall/mineral/wood/nonmetal(get_turf(src))
+				qdel(src)
+				return
+	return ..()
+
 
 /obj/structure/barricade/wooden/crude
 	name = "crude plank barricade"
