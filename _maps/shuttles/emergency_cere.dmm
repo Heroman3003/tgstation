@@ -420,7 +420,7 @@
 /turf/open/floor/plasteel/dark,
 /area/shuttle/escape)
 "aM" = (
-/obj/item/twohanded/required/kirbyplants{
+/obj/item/kirbyplants{
 	icon_state = "plant-22"
 	},
 /obj/item/radio/intercom{
@@ -446,7 +446,7 @@
 /turf/open/floor/plasteel/dark,
 /area/shuttle/escape)
 "aP" = (
-/obj/item/twohanded/required/kirbyplants{
+/obj/item/kirbyplants{
 	icon_state = "plant-22"
 	},
 /obj/item/radio/intercom{
@@ -486,14 +486,14 @@
 "aS" = (
 /obj/structure/chair/comfy/shuttle,
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "aT" = (
 /obj/structure/chair/comfy/shuttle,
 /obj/machinery/light{
 	dir = 1
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "aU" = (
 /obj/structure/table,
 /obj/machinery/recharger,
@@ -501,12 +501,12 @@
 	pixel_x = -32
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "aV" = (
 /obj/structure/table,
 /obj/item/book/manual/wiki/security_space_law,
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "aZ" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -537,10 +537,10 @@
 	dir = 4
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "be" = (
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bf" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 8
@@ -551,7 +551,7 @@
 	pixel_y = 6
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bg" = (
 /obj/machinery/button/flasher{
 	id = "shuttle_flasher";
@@ -561,7 +561,7 @@
 /obj/structure/table,
 /obj/machinery/recharger,
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bj" = (
 /turf/open/floor/mech_bay_recharge_floor,
 /area/shuttle/escape)
@@ -570,14 +570,14 @@
 	dir = 8
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bn" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Emergency Shuttle Brig";
 	req_access_txt = "2"
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bo" = (
 /obj/machinery/computer/mech_bay_power_console,
 /turf/open/floor/plasteel,
@@ -592,14 +592,14 @@
 	pixel_y = 6
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bq" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Emergency Shuttle Brig";
 	req_access_txt = "2"
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bs" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -645,19 +645,19 @@
 	req_access_txt = "2"
 	},
 /turf/open/floor/plating,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bw" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 1
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "by" = (
 /obj/structure/table,
 /obj/item/storage/box/teargas,
 /obj/item/storage/box/zipties,
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape)
+/area/shuttle/escape/brig)
 "bA" = (
 /obj/machinery/door/airlock/shuttle{
 	name = "Emergency Shuttle Cargo"
@@ -701,7 +701,6 @@
 	name = "Emergency Shuttle Airlock"
 	},
 /obj/docking_port/mobile/emergency{
-	dheight = 0;
 	dwidth = 15;
 	height = 20;
 	name = "Cere emergency shuttle";
@@ -949,7 +948,7 @@
 /turf/open/floor/plasteel,
 /area/shuttle/escape)
 "ca" = (
-/obj/item/twohanded/required/kirbyplants{
+/obj/item/kirbyplants{
 	icon_state = "plant-21"
 	},
 /turf/open/floor/plasteel,
@@ -975,7 +974,7 @@
 /obj/machinery/light{
 	dir = 4
 	},
-/obj/item/twohanded/required/kirbyplants{
+/obj/item/kirbyplants{
 	icon_state = "plant-21"
 	},
 /turf/open/floor/plasteel,
@@ -1128,9 +1127,6 @@
 /turf/open/floor/plasteel/white,
 /area/shuttle/escape)
 "cu" = (
-/obj/machinery/sleeper{
-	dir = 8
-	},
 /obj/machinery/light{
 	dir = 4
 	},
@@ -1141,6 +1137,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
+/obj/machinery/stasis,
 /turf/open/floor/plasteel/white,
 /area/shuttle/escape)
 "cv" = (
@@ -1179,7 +1176,7 @@
 /turf/open/floor/plasteel/white,
 /area/shuttle/escape)
 "cz" = (
-/obj/machinery/computer/arcade,
+/obj/effect/spawner/randomarcade,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -1243,36 +1240,34 @@
 /turf/open/floor/plasteel/white,
 /area/shuttle/escape)
 "cD" = (
-/obj/machinery/sleeper{
-	dir = 8
-	},
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
+/obj/machinery/stasis,
 /turf/open/floor/plasteel/white,
 /area/shuttle/escape)
 "cE" = (
 /obj/structure/closet/crate/freezer,
 /obj/item/reagent_containers/blood,
 /obj/item/reagent_containers/blood,
-/obj/item/reagent_containers/blood/AMinus,
-/obj/item/reagent_containers/blood/BMinus{
+/obj/item/reagent_containers/blood/a_minus,
+/obj/item/reagent_containers/blood/b_minus{
 	pixel_x = -4;
 	pixel_y = 4
 	},
-/obj/item/reagent_containers/blood/BPlus{
+/obj/item/reagent_containers/blood/b_plus{
 	pixel_x = 1;
 	pixel_y = 2
 	},
-/obj/item/reagent_containers/blood/OMinus,
-/obj/item/reagent_containers/blood/OPlus{
+/obj/item/reagent_containers/blood/o_minus,
+/obj/item/reagent_containers/blood/o_plus{
 	pixel_x = -2;
 	pixel_y = -1
 	},
 /obj/item/reagent_containers/blood/random,
 /obj/item/reagent_containers/blood/random,
-/obj/item/reagent_containers/blood/APlus,
+/obj/item/reagent_containers/blood/a_plus,
 /obj/item/reagent_containers/blood/random,
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
@@ -1388,16 +1383,6 @@
 	},
 /turf/open/floor/plasteel/white,
 /area/shuttle/escape)
-"cL" = (
-/obj/machinery/sleeper{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/turf/open/floor/plasteel/white,
-/area/shuttle/escape)
 "cM" = (
 /obj/item/radio/intercom{
 	name = "Station Intercom (General)";
@@ -1410,9 +1395,6 @@
 /turf/open/floor/plasteel/white,
 /area/shuttle/escape)
 "cN" = (
-/obj/machinery/sleeper{
-	dir = 8
-	},
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -1420,6 +1402,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
+/obj/machinery/stasis,
 /turf/open/floor/plasteel/white,
 /area/shuttle/escape)
 "cO" = (
@@ -1516,7 +1499,7 @@
 /area/shuttle/escape)
 "cX" = (
 /obj/structure/sink{
-	dir = 8;
+	dir = 4;
 	pixel_x = -12;
 	pixel_y = 2
 	},
@@ -1746,6 +1729,13 @@
 	dir = 8
 	},
 /turf/open/floor/plasteel,
+/area/shuttle/escape)
+"pf" = (
+/obj/machinery/vending/wallmed{
+	name = "Emergency NanoMed";
+	use_power = 0
+	},
+/turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/escape)
 
 (1,1,1) = {"
@@ -2485,7 +2475,7 @@ cs
 cp
 cp
 cp
-cL
+cw
 ab
 cR
 cY
@@ -2568,7 +2558,7 @@ ac
 ac
 ab
 ab
-ad
+pf
 cu
 cy
 cD

@@ -18,12 +18,12 @@
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
 		H.put_in_hands(new /obj/item/valentine)
 		var/obj/item/storage/backpack/b = locate() in H.contents
-		new /obj/item/reagent_containers/food/snacks/candyheart(b)
+		new /obj/item/food/candyheart(b)
 		new /obj/item/storage/fancy/heart_box(b)
 
 	var/list/valentines = list()
 	for(var/mob/living/M in GLOB.player_list)
-		if(!M.stat && M.client && M.mind)
+		if(!M.stat && M.mind)
 			valentines |= M
 
 
@@ -78,6 +78,7 @@
 			name = "valentine - To: [recipient] From: [sender]"
 
 /obj/item/valentine/examine(mob/user)
+	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		if( !(ishuman(user) || isobserver(user) || issilicon(user)) )
 			user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(message)]</BODY></HTML>", "window=[name]")
@@ -86,20 +87,20 @@
 			user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[message]</BODY></HTML>", "window=[name]")
 			onclose(user, "[name]")
 	else
-		to_chat(user, "<span class='notice'>It is too far away.</span>")
+		. += "<span class='notice'>It is too far away.</span>"
 
 /obj/item/valentine/attack_self(mob/user)
 	user.examinate(src)
 
-/obj/item/reagent_containers/food/snacks/candyheart
+/obj/item/food/candyheart
 	name = "candy heart"
 	icon = 'icons/obj/holiday_misc.dmi'
 	icon_state = "candyheart"
 	desc = "A heart-shaped candy that reads: "
-	list_reagents = list("sugar" = 2)
+	food_reagents = list(/datum/reagent/consumable/sugar = 2)
 	junkiness = 5
 
-/obj/item/reagent_containers/food/snacks/candyheart/Initialize()
+/obj/item/food/candyheart/Initialize()
 	. = ..()
 	desc = pick(strings(VALENTINE_FILE, "candyhearts"))
 	icon_state = pick("candyheart", "candyheart2", "candyheart3", "candyheart4")

@@ -77,10 +77,10 @@ GLOBAL_VAR(antag_prototypes)
 	return common_commands
 
 /datum/mind/proc/get_special_statuses()
-	var/list/result = list()
+	var/list/result = LAZYCOPY(special_statuses)
 	if(!current)
 		result += "<span class='bad'>No body!</span>"
-	if(current && current.has_trait(TRAIT_MINDSHIELD))
+	if(current && HAS_TRAIT(current, TRAIT_MINDSHIELD))
 		result += "<span class='good'>Mindshielded</span>"
 	//Move these to mob
 	if(iscyborg(current))

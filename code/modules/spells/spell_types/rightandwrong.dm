@@ -20,7 +20,7 @@ GLOBAL_LIST_INIT(summoned_guns, list(
 	/obj/item/gun/ballistic/automatic/ar,
 	/obj/item/gun/ballistic/revolver/mateba,
 	/obj/item/gun/ballistic/rifle/boltaction,
-	/obj/item/pneumatic_cannon/speargun,
+	/obj/item/gun/ballistic/rifle/boltaction/harpoon,
 	/obj/item/gun/ballistic/automatic/mini_uzi,
 	/obj/item/gun/energy/lasercannon,
 	/obj/item/gun/energy/kinetic_accelerator/crossbow/large,
@@ -59,7 +59,7 @@ GLOBAL_LIST_INIT(summoned_magic, list(
 	/obj/item/book/granter/spell/barnyard,
 	/obj/item/book/granter/spell/charge,
 	/obj/item/book/granter/spell/summonitem,
-	/obj/item/gun/magic/wand,
+	/obj/item/gun/magic/wand/nothing,
 	/obj/item/gun/magic/wand/death,
 	/obj/item/gun/magic/wand/resurrection,
 	/obj/item/gun/magic/wand/polymorph,
@@ -81,13 +81,11 @@ GLOBAL_LIST_INIT(summoned_special_magic, list(
 	/obj/item/storage/belt/wands/full,
 	/obj/item/antag_spawner/contract,
 	/obj/item/gun/magic/staff/chaos,
-	/obj/item/necromantic_stone,
-	/obj/item/blood_contract))
+	/obj/item/necromantic_stone))
 
 //everything above except for single use spellbooks, because they are counted separately (and are for basic bitches anyways)
 GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	/obj/item/antag_spawner/contract,
-	/obj/item/blood_contract,
 	/obj/item/clothing/suit/space/hardsuit/shielded/wizard,
 	/obj/item/gun/magic,
 	/obj/item/immortality_talisman,
@@ -118,8 +116,9 @@ GLOBAL_VAR_INIT(summon_magic_triggered, FALSE)
 
 	var/gun_type = pick(GLOB.summoned_guns)
 	var/obj/item/gun/G = new gun_type(get_turf(H))
-	G.unlock()
-	playsound(get_turf(H),'sound/magic/summon_guns.ogg', 50, 1)
+	if (istype(G)) // The list may contain some non-gun type guns which do not have this proc
+		G.unlock()
+	playsound(get_turf(H),'sound/magic/summon_guns.ogg', 50, TRUE)
 
 	var/in_hand = H.put_in_hands(G) // not always successful
 
@@ -143,7 +142,7 @@ GLOBAL_VAR_INIT(summon_magic_triggered, FALSE)
 		lucky = TRUE
 
 	var/obj/item/M = new magic_type(get_turf(H))
-	playsound(get_turf(H),'sound/magic/summon_magic.ogg', 50, 1)
+	playsound(get_turf(H),'sound/magic/summon_magic.ogg', 50, TRUE)
 
 	var/in_hand = H.put_in_hands(M)
 

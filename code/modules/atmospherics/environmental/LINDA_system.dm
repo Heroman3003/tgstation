@@ -16,9 +16,10 @@
 /turf/open/CanAtmosPass = ATMOS_PASS_PROC
 /turf/open/CanAtmosPassVertical = ATMOS_PASS_PROC
 
+//Do NOT use this to see if 2 turfs are connected, it mutates state, and we cache that info anyhow. Use TURFS_CAN_SHARE or TURF_SHARES depending on your usecase
 /turf/open/CanAtmosPass(turf/T, vertical = FALSE)
 	var/dir = vertical? get_dir_multiz(src, T) : get_dir(src, T)
-	var/opp = dir_inverse_multiz(dir)
+	var/opp = REVERSE_DIR(dir)
 	var/R = FALSE
 	if(vertical && !(zAirOut(dir, T) && T.zAirIn(dir, src)))
 		R = TRUE
@@ -43,8 +44,8 @@
 /atom/movable/proc/BlockSuperconductivity() // objects that block air and don't let superconductivity act. Only firelocks atm.
 	return FALSE
 
-/turf/proc/CalculateAdjacentTurfs()
-	var/canpass = CANATMOSPASS(src, src) 
+/turf/proc/ImmediateCalculateAdjacentTurfs()
+	var/canpass = CANATMOSPASS(src, src)
 	var/canvpass = CANVERTICALATMOSPASS(src, src)
 	for(var/direction in GLOB.cardinals_multiz)
 		var/turf/T = get_step_multiz(src, direction)
@@ -99,21 +100,31 @@
 
 	return adjacent_turfs
 
-/atom/proc/air_update_turf(command = 0)
-	if(!isturf(loc) && command)
-		return
+/atom/proc/air_update_turf(update = FALSE, remove = FALSE)
 	var/turf/T = get_turf(loc)
-	T.air_update_turf(command)
+	T.air_update_turf(update, remove)
 
-/turf/air_update_turf(command = 0)
-	if(command)
-		CalculateAdjacentTurfs()
-	SSair.add_to_active(src,command)
+/**
+ * A helper proc for dealing with atmos changes
+ *
+ * Ok so this thing is pretty much used as a catch all for all the situations someone might wanna change something
+ * About a turfs atmos. It's real clunky, and someone needs to clean it up, but not today.
+ * Arguments:
+ * * update - Has the state of the structures in the world changed? If so, update our adjacent atmos turf list, if not, don't.
+ * * remove - Are you removing an active turf (Read wall), or adding one
+*/
+/turf/air_update_turf(update = FALSE, remove = FALSE)
+	if(update)
+		ImmediateCalculateAdjacentTurfs()
+	if(remove)
+		SSair.remove_from_active(src)
+	else
+		SSair.add_to_active(src)
 
 /atom/movable/proc/move_update_air(turf/T)
-    if(isturf(T))
-        T.air_update_turf(1)
-    air_update_turf(1)
+	if(isturf(T))
+		T.air_update_turf(TRUE, FALSE) //You're empty now
+	air_update_turf(TRUE, TRUE) //You aren't
 
 /atom/proc/atmos_spawn_air(text) //because a lot of people loves to copy paste awful code lets just make an easy proc to spawn your plasma fires
 	var/turf/open/T = get_turf(src)
@@ -130,4 +141,4 @@
 
 	air.merge(G)
 	archive()
-	SSair.add_to_active(src, 0)
+	SSair.add_to_active(src)

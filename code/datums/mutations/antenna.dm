@@ -15,7 +15,7 @@
 	icon_state = "walkietalkie"
 
 /obj/item/implant/radio/antenna/Initialize(mapload)
-	..()
+	. = ..()
 	radio.name = "internal antenna"
 
 /datum/mutation/human/antenna/on_acquiring(mob/living/carbon/human/owner)
@@ -27,8 +27,7 @@
 /datum/mutation/human/antenna/on_losing(mob/living/carbon/human/owner)
 	if(..())
 		return
-	if(linked_radio)
-		linked_radio.Destroy()
+	QDEL_NULL(linked_radio)
 
 /datum/mutation/human/antenna/New(class_ = MUT_OTHER, timer, datum/mutation/human/copymut)
 	..()
@@ -59,7 +58,7 @@
 
 /obj/effect/proc_holder/spell/targeted/mindread/cast(list/targets, mob/living/carbon/human/user = usr)
 	for(var/mob/living/M in targets)
-		if(istype(usr.get_item_by_slot(SLOT_HEAD), /obj/item/clothing/head/foilhat) || istype(M.get_item_by_slot(SLOT_HEAD), /obj/item/clothing/head/foilhat))
+		if(usr.anti_magic_check(FALSE, FALSE, TRUE, 0) || M.anti_magic_check(FALSE, FALSE, TRUE, 0))
 			to_chat(usr, "<span class='warning'>As you reach out with your mind, you're suddenly stopped by a vision of a massive tinfoil wall that streches beyond visible range. It seems you've been foiled.</span>")
 			return
 		if(M.stat == DEAD)
@@ -92,11 +91,10 @@
 			if(iscarbon(M))
 				var/mob/living/carbon/human/H = M
 				to_chat(user, "<span class='boldnotice'>You find that their intent is to [H.a_intent]...</span>")
-				var/datum/dna/the_dna = H.has_dna()
-				if(the_dna)
-					to_chat(user, "<span class='boldnotice'>You uncover that their true identity is [the_dna.real_name].</span>")
+				if(H.mind)
+					to_chat(user, "<span class='boldnotice'>You uncover that [H.p_their()] true identity is [H.mind.name].</span>")
 		else
-			to_chat(user, "<span class='boldnotice'>You can't find a mind to read inside of [M].</span>")
+			to_chat(user, "<span class='warning'>You can't find a mind to read inside of [M]!</span>")
 
 /datum/mutation/human/mindreader/New(class_ = MUT_OTHER, timer, datum/mutation/human/copymut)
 	..()

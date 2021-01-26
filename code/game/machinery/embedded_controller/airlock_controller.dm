@@ -201,10 +201,9 @@
 	density = FALSE
 
 	frequency = FREQ_AIRLOCK_CONTROL
-	power_channel = ENVIRON
+	power_channel = AREA_USAGE_ENVIRON
 
 	// Setup parameters only
-	var/id_tag
 	var/exterior_door_tag
 	var/interior_door_tag
 	var/airpump_tag
@@ -255,7 +254,7 @@
 	new_prog.master = src
 	program = new_prog
 
-/obj/machinery/embedded_controller/radio/airlock_controller/update_icon()
+/obj/machinery/embedded_controller/radio/airlock_controller/update_icon_state()
 	if(on && program)
 		if(program.memory["processing"])
 			icon_state = "airlock_control_process"

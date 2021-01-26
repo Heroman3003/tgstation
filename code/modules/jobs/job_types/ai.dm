@@ -1,7 +1,6 @@
 /datum/job/ai
 	title = "AI"
-	flag = AI_JF
-	department_flag = ENGSEC
+	auto_deadmin_role_flags = DEADMIN_POSITION_SILICON
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -13,16 +12,19 @@
 	exp_type = EXP_TYPE_CREW
 	exp_type_department = EXP_TYPE_SILICON
 	display_order = JOB_DISPLAY_ORDER_AI
+	allow_bureaucratic_error = FALSE
 	var/do_special_check = TRUE
 
 /datum/job/ai/equip(mob/living/carbon/human/H, visualsOnly, announce, latejoin, datum/outfit/outfit_override, client/preference_source = null)
+	if(visualsOnly)
+		CRASH("dynamic preview is unsupported")
 	. = H.AIize(latejoin,preference_source)
 
 /datum/job/ai/after_spawn(mob/H, mob/M, latejoin)
 	. = ..()
 	if(latejoin)
-		var/obj/structure/AIcore/latejoin_inactive/lateJoinCore
-		for(var/obj/structure/AIcore/latejoin_inactive/P in GLOB.latejoin_ai_cores)
+		var/obj/structure/ai_core/latejoin_inactive/lateJoinCore
+		for(var/obj/structure/ai_core/latejoin_inactive/P in GLOB.latejoin_ai_cores)
 			if(P.is_available())
 				lateJoinCore = P
 				GLOB.latejoin_ai_cores -= P
@@ -32,7 +34,10 @@
 			H.forceMove(lateJoinCore.loc)
 			qdel(lateJoinCore)
 	var/mob/living/silicon/ai/AI = H
-	AI.apply_pref_name("ai", M.client)			//If this runtimes oh well jobcode is fucked.
+	if(SSticker.anonymousnames)
+		AI.fully_replace_character_name(AI.real_name, SSticker.anonymousnames.anonymous_ai_name(TRUE))
+	else
+		AI.apply_pref_name("ai", M.client)			//If this runtimes oh well jobcode is fucked. //what is this no energy attitude man
 	AI.set_core_display_icon(null, M.client)
 
 	//we may have been created after our borg
@@ -51,7 +56,7 @@
 	if(!do_special_check)
 		return TRUE
 	for(var/i in GLOB.latejoin_ai_cores)
-		var/obj/structure/AIcore/latejoin_inactive/LAI = i
+		var/obj/structure/ai_core/latejoin_inactive/LAI = i
 		if(istype(LAI))
 			if(LAI.is_available())
 				return TRUE

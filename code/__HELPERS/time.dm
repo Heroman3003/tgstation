@@ -11,11 +11,11 @@
 		wtime = world.time
 	return time2text(wtime - GLOB.timezoneOffset, format)
 
-/proc/station_time(display_only = FALSE)
-	return ((((world.time - SSticker.round_start_time) * SSticker.station_time_rate_multiplier) + SSticker.gametime_offset) % 864000) - (display_only? GLOB.timezoneOffset : 0)
+/proc/station_time(display_only = FALSE, wtime=world.time)
+	return ((((wtime - SSticker.round_start_time) * SSticker.station_time_rate_multiplier) + SSticker.gametime_offset) % 864000) - (display_only? GLOB.timezoneOffset : 0)
 
-/proc/station_time_timestamp(format = "hh:mm:ss")
-	return time2text(station_time(TRUE), format)
+/proc/station_time_timestamp(format = "hh:mm:ss", wtime)
+	return time2text(station_time(TRUE, wtime), format)
 
 /proc/station_time_debug(force_set)
 	if(isnum(force_set))
@@ -27,14 +27,6 @@
 	else
 		SSticker.gametime_offset = CEILING(SSticker.gametime_offset, 3600)
 
-/* Returns 1 if it is the selected month and day */
-/proc/isDay(month, day)
-	if(isnum(month) && isnum(day))
-		var/MM = text2num(time2text(world.timeofday, "MM")) // get the current month
-		var/DD = text2num(time2text(world.timeofday, "DD")) // get the current day
-		if(month == MM && day == DD)
-			return 1
-
 //returns timestamp in a sql and a not-quite-compliant ISO 8601 friendly format
 /proc/SQLtime(timevar)
 	return time2text(timevar || world.timeofday, "YYYY-MM-DD hh:mm:ss")
@@ -44,22 +36,40 @@ GLOBAL_VAR_INIT(midnight_rollovers, 0)
 GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 /proc/update_midnight_rollover()
 	if (world.timeofday < GLOB.rollovercheck_last_timeofday) //TIME IS GOING BACKWARDS!
-		return GLOB.midnight_rollovers++
+		GLOB.midnight_rollovers++
+	GLOB.rollovercheck_last_timeofday = world.timeofday
 	return GLOB.midnight_rollovers
 
-/proc/weekdayofthemonth()
-	var/DD = text2num(time2text(world.timeofday, "DD")) 	// get the current day
-	switch(DD)
-		if(8 to 13)
-			return 2
-		if(14 to 20)
-			return 3
-		if(21 to 27)
-			return 4
-		if(28 to INFINITY)
-			return 5
-		else
+
+///Returns a string day as an integer in ISO format 1 (Monday) - 7 (Sunday)
+/proc/weekday_to_iso(ddd)
+	switch (ddd)
+		if (MONDAY)
 			return 1
+		if (TUESDAY)
+			return 2
+		if (WEDNESDAY)
+			return 3
+		if (THURSDAY)
+			return 4
+		if (FRIDAY)
+			return 5
+		if (SATURDAY)
+			return 6
+		if (SUNDAY)
+			return 7
+
+///Returns the first day of the given year and month in number format, from 1 (monday) - 7 (sunday).
+/proc/first_day_of_month(year, month)
+	// https://en.wikipedia.org/wiki/Zeller%27s_congruence
+	var/m = month < 3 ? month + 12 : month // month (march = 3, april = 4...february = 14)
+	var/K = year % 100 // year of century
+	var/J = round(year / 100) // zero-based century
+	// day 0-6 saturday to sunday:
+	var/h = (1 + round(13 * (m + 1) / 5) + K + round(K / 4) + round(J / 4) - 2 * J) % 7
+	//convert to ISO 1-7 monday first format
+	return ((h + 5) % 7) + 1
+
 
 //Takes a value of time in deciseconds.
 //Returns a text value of that number in hours, minutes, or seconds.
@@ -89,3 +99,7 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 	if(hour)
 		hourT = " and [hour] hour[(hour != 1)? "s":""]"
 	return "[day] day[(day != 1)? "s":""][hourT][minuteT][secondT]"
+
+
+/proc/daysSince(realtimev)
+	return round((world.realtime - realtimev) / (24 HOURS))

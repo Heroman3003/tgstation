@@ -4,6 +4,7 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "light1"
 	desc = "Make dark."
+	power_channel = AREA_USAGE_LIGHT
 	/// Set this to a string, path, or area instance to control that area
 	/// instead of the switch's location.
 	var/area/area = null
@@ -22,24 +23,32 @@
 
 	update_icon()
 
-/obj/machinery/light_switch/update_icon()
-	if(stat & NOPOWER)
+/obj/machinery/light_switch/update_icon_state()
+	luminosity = 0
+	if(machine_stat & NOPOWER)
 		icon_state = "light-p"
 	else
+		luminosity = 1
 		if(area.lightswitch)
 			icon_state = "light1"
 		else
 			icon_state = "light0"
 
+/obj/machinery/light_switch/update_overlays()
+	. = ..()
+	if(machine_stat & NOPOWER)
+		return
+	SSvis_overlays.add_vis_overlay(src, icon, "light-glow", EMISSIVE_STRUCTURE_LAYER, EMISSIVE_STRUCTURE_PLANE, dir, alpha)
+
 /obj/machinery/light_switch/examine(mob/user)
-	..()
-	to_chat(user, "It is [area.lightswitch ? "on" : "off"].")
+	. = ..()
+	. += "It is [area.lightswitch ? "on" : "off"]."
 
 /obj/machinery/light_switch/interact(mob/user)
 	. = ..()
 
 	area.lightswitch = !area.lightswitch
-	area.updateicon()
+	area.update_icon()
 
 	for(var/obj/machinery/light_switch/L in area)
 		L.update_icon()
@@ -47,17 +56,13 @@
 	area.power_change()
 
 /obj/machinery/light_switch/power_change()
+	SHOULD_CALL_PARENT(FALSE)
 	if(area == get_area(src))
-		if(powered(LIGHT))
-			stat &= ~NOPOWER
-		else
-			stat |= NOPOWER
-
-		update_icon()
+		return ..()
 
 /obj/machinery/light_switch/emp_act(severity)
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
-	if(!(stat & (BROKEN|NOPOWER)))
+	if(!(machine_stat & (BROKEN|NOPOWER)))
 		power_change()

@@ -35,7 +35,7 @@
 #define WIRE_POWER2 "Main Power 2"
 #define WIRE_PROCEED "Proceed"
 #define WIRE_RX "Receive"
-#define WIRE_RESET_MODULE "Reset Module"
+#define WIRE_RESET_MODEL "Reset Model"
 #define WIRE_SAFETY "Safety"
 #define WIRE_SHOCK "High Voltage Ground"
 #define WIRE_SIGNAL "Signal"
@@ -48,3 +48,7 @@
 #define WIRE_ZAP "High Voltage Circuit"
 #define WIRE_ZAP1 "High Voltage Circuit 1"
 #define WIRE_ZAP2 "High Voltage Circuit 2"
+#define WIRE_PRIZEVEND "Emergency Prize Vend"
+#define WIRE_RESETOWNER "Reset Owner"
+#define WIRE_AGELIMIT "Age Limit"
+
